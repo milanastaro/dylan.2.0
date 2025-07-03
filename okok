@@ -1,0 +1,104 @@
+import streamlit as st
+import random
+from PIL import Image
+
+st.set_page_config(page_title="Stylect - Colorful Edition", layout="wide")
+
+st.markdown(
+    """
+    <style>
+    .main {
+        background: linear-gradient(135deg, #ffd1dc, #d1e8ff);
+        color: #333;
+    }
+    .block-container {
+        padding-top: 2rem;
+    }
+    h1, h2, h3 {
+        text-align: center;
+        color: #444;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# --------------------------- Header ---------------------------
+st.markdown("""<h1>💖 Stylect - Your Fashion Universe</h1>""", unsafe_allow_html=True)
+st.markdown("<h3>✨ Where style meets creativity ✨</h3>", unsafe_allow_html=True)
+
+# --------------------------- Sidebar Navigation ---------------------------
+page = st.sidebar.selectbox("Navigate", [
+    "Welcome", "Upload Outfit", "Outfit Generator", "My Closet", "Style Feed", "Shop", "Color Analysis"
+])
+
+# --------------------------- Welcome ---------------------------
+if page == "Welcome":
+    st.image("https://i.imgur.com/Jr2zA26.gif", use_column_width=True)
+    st.markdown("""
+    ### 🌟 Welcome to Stylect!
+    Explore a colorful space for:
+    - 👗 Uploading your wardrobe
+    - 🎨 Discovering your personal colors
+    - 🤖 AI-powered outfit ideas
+    - 🛍️ Shopping & selling fashion
+    - 💬 Sharing your style with the world!
+    """)
+
+# --------------------------- Upload Outfit ---------------------------
+elif page == "Upload Outfit":
+    st.subheader("🧥 Upload Your Style")
+    uploaded_file = st.file_uploader("Upload clothing image")
+    desc = st.text_input("Describe this outfit")
+    if uploaded_file and st.button("Save to Closet"):
+        st.image(uploaded_file, width=200)
+        st.success("Saved to your virtual closet!")
+
+# --------------------------- Outfit Generator ---------------------------
+elif page == "Outfit Generator":
+    st.subheader("🤖 AI Outfit Generator")
+    temp = st.slider("🌡️ Temperature", 30, 100, 70)
+    occasion = st.selectbox("🎯 Occasion", ["Casual", "Work", "Party", "Date", "Formal"])
+    color_theme = random.choice(["Pastel", "Earthy", "Monochrome", "Bright"])
+    st.markdown(f"**Suggested Theme:** `{color_theme}`")
+    st.markdown(f"**Based on {occasion} in {temp}°F...**")
+    st.success(f"👗 Try a light {color_theme.lower()} outfit with breathable layers!")
+
+# --------------------------- My Closet ---------------------------
+elif page == "My Closet":
+    st.subheader("👚 Your Virtual Closet")
+    st.info("Here you’ll see uploaded items... (placeholder)")
+    for i in range(3):
+        st.image("https://via.placeholder.com/150", caption=f"Item {i+1}", width=150)
+
+# --------------------------- Style Feed ---------------------------
+elif page == "Style Feed":
+    st.subheader("📸 Style Feed")
+    st.image("https://i.imgur.com/ksXj2kE.jpg", caption="Alex's Boho Vibe")
+    st.image("https://i.imgur.com/cP8ZHCW.jpg", caption="Jamie's Power Suit")
+    st.text_input("💬 Leave a comment")
+    if st.button("❤️ Like"):
+        st.success("You liked this look!")
+
+# --------------------------- Shop ---------------------------
+elif page == "Shop":
+    st.subheader("🛍️ Fashion Marketplace")
+    for i in range(2):
+        st.image("https://via.placeholder.com/160", caption=f"Seller Item #{i+1}")
+        st.button("Add to Cart", key=f"cart{i}")
+        st.text_area("Leave a review", key=f"rev{i}")
+
+# --------------------------- Color Analysis ---------------------------
+elif page == "Color Analysis":
+    st.subheader("🎨 Color Analysis")
+    img = st.file_uploader("Upload your face photo")
+    if img:
+        st.image(img, width=150)
+        undertone = random.choice(["Warm", "Cool", "Neutral"])
+        st.success(f"Your undertone: **{undertone}**")
+        if undertone == "Warm":
+            st.markdown("Best Colors: **Olive, Coral, Cream**")
+        elif undertone == "Cool":
+            st.markdown("Best Colors: **Blue, Silver, Lavender**")
+        else:
+            st.markdown("Best Colors: **Teal, Rose, Gray**")
